@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Interactive simulation of causal ordering and total ordering in distributed group communication.">
+  <title>Distributed Group Communication Simulator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="eyebrow">DISTRIBUTED SYSTEMS • INTERACTIVE LAB</div>
+    <h1>Group Communication Simulator</h1>
+    <p>Explore how distributed processes deliver messages using causal ordering and total ordering.</p>
+    <div class="hero-tags"><span>3 Processes</span><span>Vector Clocks</span><span>Message Ordering</span></div>
+  </header>
+
+  <main class="container">
+    <section class="panel controls">
+      <div class="section-heading">
+        <div><p class="eyebrow">CONTROL CENTER</p><h2>Send a message</h2></div>
+        <span class="status-dot">Simulation ready</span>
+      </div>
+      <div class="form-grid">
+        <label>Sender
+          <select id="sender">
+            <option value="0">Process P1</option>
+            <option value="1">Process P2</option>
+            <option value="2">Process P3</option>
+          </select>
+        </label>
+        <label>Message
+          <input id="messageText" maxlength="100" value="Hello from P1" placeholder="Type a message">
+        </label>
+      </div>
+      <div class="button-row">
+        <button id="sendCausal" class="button primary">Send with causal ordering</button>
+        <button id="sendTotal" class="button secondary">Broadcast with total ordering</button>
+      </div>
+      <div class="button-row lower">
+        <button id="demoCausal" class="button ghost">Run causal demo</button>
+        <button id="demoTotal" class="button ghost">Run total-order demo</button>
+        <button id="reset" class="button danger">Reset simulation</button>
+      </div>
+      <p class="hint">Tip: send a message, then send another from a different process. Use the demos to see a complete example.</p>
+    </section>
+
+    <section class="metrics">
+      <article class="metric"><span>Processes</span><strong>3</strong><small>P1 · P2 · P3</small></article>
+      <article class="metric"><span>Messages created</span><strong id="messageCount">0</strong><small>In this session</small></article>
+      <article class="metric"><span>Causal deliveries</span><strong id="causalCount">0</strong><small>Per-process delivery logs</small></article>
+      <article class="metric"><span>Total-order deliveries</span><strong id="totalCount">0</strong><small>Same global sequence</small></article>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading">
+        <div><p class="eyebrow">NETWORK VIEW</p><h2>Distributed processes</h2></div>
+        <span class="legend"><i class="legend-dot p1"></i> P1 <i class="legend-dot p2"></i> P2 <i class="legend-dot p3"></i> P3</span>
+      </div>
+      <div class="process-grid" id="processGrid">
+        <article class="process-card" data-process="0"><div class="process-top"><span class="process-icon p1">P1</span><div><h3>Process P1</h3><p>Vector clock <code id="clock0">[0, 0, 0]</code></p></div></div><h4>Causal delivery log</h4><ol id="causalLog0" class="delivery-log"><li class="empty">No messages delivered yet.</li></ol></article>
+        <article class="process-card" data-process="1"><div class="process-top"><span class="process-icon p2">P2</span><div><h3>Process P2</h3><p>Vector clock <code id="clock1">[0, 0, 0]</code></p></div></div><h4>Causal delivery log</h4><ol id="causalLog1" class="delivery-log"><li class="empty">No messages delivered yet.</li></ol></article>
+        <article class="process-card" data-process="2"><div class="process-top"><span class="process-icon p3">P3</span><div><h3>Process P3</h3><p>Vector clock <code id="clock2">[0, 0, 0]</code></p></div></div><h4>Causal delivery log</h4><ol id="causalLog2" class="delivery-log"><li class="empty">No messages delivered yet.</li></ol></article>
+      </div>
+    </section>
+
+    <section class="two-columns">
+      <section class="panel">
+        <div class="section-heading"><div><p class="eyebrow">CAUSAL ORDERING</p><h2>Vector clock events</h2></div></div>
+        <p class="section-copy">Each event updates a vector clock. A message is delivered only when its causal predecessors have been delivered.</p>
+        <div id="causalEvents" class="event-list"><p class="empty-block">Causal events will appear here.</p></div>
+      </section>
+      <section class="panel">
+        <div class="section-heading"><div><p class="eyebrow">TOTAL ORDERING</p><h2>Global delivery sequence</h2></div></div>
+        <p class="section-copy">Every process receives the same agreed sequence number for each total-order broadcast.</p>
+        <ol id="totalLog" class="total-log"><li class="empty">No total-order broadcasts yet.</li></ol>
+      </section>
+    </section>
+
+    <section class="panel explanation">
+      <p class="eyebrow">LEARN THE DIFFERENCE</p>
+      <div class="compare-grid">
+        <div><h3><span class="compare-number">01</span> Causal ordering</h3><p>If sending message B depends on receiving message A, all processes must deliver A before B. Independent messages may appear in different relative orders.</p></div>
+        <div><h3><span class="compare-number">02</span> Total ordering</h3><p>All processes deliver all broadcast messages in exactly the same order, even if the messages were sent concurrently.</p></div>
+      </div>
+      <div class="note"><strong>Simulation note:</strong> This is an educational, single-browser model. Total-order sequence numbers are assigned by one simulated coordinator; it is not a fault-tolerant distributed consensus protocol.</div>
+    </section>
+    <footer>Built for learning distributed systems · HTML, CSS and JavaScript · Ready for GitHub Pages</footer>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
